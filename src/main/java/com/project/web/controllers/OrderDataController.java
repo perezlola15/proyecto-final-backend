@@ -41,14 +41,16 @@ public class OrderDataController {
 	}
 
 	@PutMapping("/{orderId}")
-	public ResponseEntity<OrderData> update(@PathVariable("orderId") int orderId, @RequestBody OrderData orderData) {
-		if (orderId != orderData.getOrderId()) {
-		return orderDataService.findById(orderId)
-				.map(orderDataDB -> new ResponseEntity<>(orderDataService.save(orderData), HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<OrderData> update(@PathVariable("orderId") int orderId, @RequestBody OrderData updatedOrder) {
+	    return orderDataService.findById(orderId).map(orderDB -> {
+	        orderDB.setOrderTable(updatedOrder.getOrderTable());
+	        orderDB.setStaff(updatedOrder.getStaff());
+	        orderDB.setOrderStatus(updatedOrder.getOrderStatus());
+	        orderDB.setOrderDate(updatedOrder.getOrderDate());
+
+	        OrderData savedOrder = orderDataService.save(orderDB);
+	        return new ResponseEntity<>(savedOrder, HttpStatus.OK); 
+	    }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
 	}
 
 	@DeleteMapping("/{orderId}")

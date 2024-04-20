@@ -18,7 +18,7 @@ import com.project.domain.services.StaffService;
 import com.project.persistence.entities.Staff;
 
 @RestController
-@RequestMapping("/staff")
+@RequestMapping("/staffs")
 public class StaffController {
 
 	@Autowired
@@ -41,14 +41,14 @@ public class StaffController {
 	}
 
 	@PutMapping("/{staffId}")
-	public ResponseEntity<Staff> update(@PathVariable("staffId") int staffId, @RequestBody Staff staff) {
-		if (staffId != staff.getStaffId()) {
-		return staffService.findById(staffId)
-				.map(staffDB -> new ResponseEntity<>(staffService.save(staff), HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Staff> update(@PathVariable("staffId") int staffId, @RequestBody Staff updatedStaff) {
+	    return staffService.findById(staffId).map(staffDB -> {
+	        staffDB.setUsername(updatedStaff.getUsername());
+	        staffDB.setPassword(updatedStaff.getPassword());
+
+	        Staff savedStaff = staffService.save(staffDB);
+	        return new ResponseEntity<>(savedStaff, HttpStatus.OK); 
+	    }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
 	}
 
 	@DeleteMapping("/{staffId}")

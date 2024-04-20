@@ -41,14 +41,13 @@ public class CategoryDishController {
 	}
 
 	@PutMapping("/{categoryId}")
-	public ResponseEntity<CategoryDish> update(@PathVariable("categoryId") int categoryId, @RequestBody CategoryDish categoryDish) {
-		if (categoryId != categoryDish.getCategoryId()) {
-		return categoryDishService.findById(categoryId)
-				.map(categoryDB -> new ResponseEntity<>(categoryDishService.save(categoryDish), HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<CategoryDish> update(@PathVariable("categoryId") int categoryId, @RequestBody CategoryDish updatedCategoryDish) {
+	    return categoryDishService.findById(categoryId).map(categoryDishDB -> {
+	    	categoryDishDB.setCategoryName(updatedCategoryDish.getCategoryName());
+
+	        CategoryDish savedCategoryDish = categoryDishService.save(categoryDishDB);
+	        return new ResponseEntity<>(savedCategoryDish, HttpStatus.OK); 
+	    }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
 	}
 
 	@DeleteMapping("/{categoryId}")

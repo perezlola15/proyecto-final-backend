@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.domain.services.DishService;
 import com.project.persistence.entities.Dish;
 
+
 @RestController
 @RequestMapping("/dishes")
 public class DishController {
@@ -41,14 +42,17 @@ public class DishController {
 	}
 
 	@PutMapping("/{dishId}")
-	public ResponseEntity<Dish> update(@PathVariable("dishId") int dishId, @RequestBody Dish dish) {
-		if (dishId != dish.getDishId()) {
-		return dishService.findById(dishId)
-				.map(dishDB -> new ResponseEntity<>(dishService.save(dish), HttpStatus.OK))
-				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-		} else {
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		}
+	public ResponseEntity<Dish> update(@PathVariable("dishId") int dishId, @RequestBody Dish updatedDish) {
+	    return dishService.findById(dishId).map(dishDB -> {
+	    	dishDB.setDishName(updatedDish.getDishName());
+	    	dishDB.setPrice(updatedDish.getPrice());
+	    	dishDB.setVat(updatedDish.getVat());
+	    	dishDB.setDishDescription(updatedDish.getDishDescription());
+	    	dishDB.setCategoryDish(updatedDish.getCategoryDish());
+	    	
+	    	Dish savedDish = dishService.save(dishDB);
+	        return new ResponseEntity<>(savedDish, HttpStatus.OK); 
+	    }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
 	}
 
 	@DeleteMapping("/{dishId}")

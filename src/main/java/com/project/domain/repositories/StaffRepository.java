@@ -30,4 +30,8 @@ public class StaffRepository {
     public void deleteById(int staffId) {
         staffCrudRepository.deleteById(staffId);
     }
+    
+    public Optional<Staff> getByUsername(String username) {
+		return staffCrudRepository.findByUsername(username);
+	}
 }
