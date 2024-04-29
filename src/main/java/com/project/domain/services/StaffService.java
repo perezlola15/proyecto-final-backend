@@ -33,4 +33,9 @@ public class StaffService {
 			return true;
 		}).orElse(false);
 	}
+	
+	public Optional<Staff> getByUsername(String username) {
+		return staffRepository.getByUsername(username);
+	}
+	
 }

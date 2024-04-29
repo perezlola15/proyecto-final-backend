@@ -2,11 +2,8 @@ package com.project.persistence.entities;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,11 +26,6 @@ public class Staff {
 	@OneToMany(mappedBy = "staff")
 	private List<OrderData> orders;
 
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "staff")
-	@JsonIgnore
-	private List<StaffRole> roles;
-
-	
 	// Getters y setters
 	public int getStaffId() {
 		return staffId;
@@ -75,13 +67,4 @@ public class Staff {
 		this.disabled = disabled;
 	}
 
-	public List<StaffRole> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<StaffRole> roles) {
-		this.roles = roles;
-	} 
-	
-	
 }

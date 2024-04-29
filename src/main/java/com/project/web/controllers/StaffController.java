@@ -34,6 +34,12 @@ public class StaffController {
 		return staffService.findById(staffId).map(staff -> new ResponseEntity<>(staff, HttpStatus.OK))
 				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
 	}
+	
+	/*@GetMapping("/byname/{staffName}")
+	public ResponseEntity<Staff> getByUsername(@PathVariable("staffName") String staffName) {
+		return staffService.getByUsername(staffName).map(staff -> new ResponseEntity<>(staff, HttpStatus.OK))
+				.orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	} */
 
 	@PostMapping
 	public ResponseEntity<Staff> save(@RequestBody Staff staff) {

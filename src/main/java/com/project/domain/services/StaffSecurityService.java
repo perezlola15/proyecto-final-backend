@@ -23,16 +23,15 @@ public class StaffSecurityService implements UserDetailsService {
 		Staff staff = this.staffRepository.getByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("El usuario " + username + " no se ha encontrado"));
 		
-		String roles[] = new String[staff.getRoles().size()]; 
+		/*String roles[] = new String[staff.getRoles().size()]; 
 		
 		for (int i = 0; i < roles.length; i++) {
 			roles[i] = staff.getRoles().get(i).getRole();
-		}
+		}*/
 		
 		return User.builder()
 				.username(staff.getUsername())
 				.password(staff.getPassword())
-				.roles(roles)
 				.disabled(staff.isDisabled())
 				.accountLocked(staff.isLocked())
 				.build();
