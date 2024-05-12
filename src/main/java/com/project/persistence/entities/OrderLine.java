@@ -1,5 +1,7 @@
 package com.project.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,18 +24,20 @@ public class OrderLine {
 	private String note;
 	
 	@ManyToOne
-	@JoinColumn(name = "dish_id") //, insertable = false, updatable = false
+	@JoinColumn(name = "dish_id", insertable = false, updatable = false)
+	//@JsonIgnore
 	private Dish dish;
 	
 	@ManyToOne
-	@JoinColumn(name = "order_id")
+	@JoinColumn(name = "order_id", insertable = false, updatable = false)
+	@JsonIgnore
 	private OrderData orderData;
 	
-	/*@Column(name="dish_id")
+	@Column(name="dish_id")
 	private int dishId;
 	
 	@Column(name="order_id")
-	private int orderId; */
+	private int orderId;
 
 	
 	// Getter y setters
@@ -77,7 +81,7 @@ public class OrderLine {
 		this.orderData = orderData;
 	}
 
-	/*public int getDishId() {
+	public int getDishId() {
 		return dishId;
 	}
 
@@ -91,6 +95,6 @@ public class OrderLine {
 
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
-	} */
+	}
 	
 }

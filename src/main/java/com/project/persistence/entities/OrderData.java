@@ -93,7 +93,7 @@ public class OrderData {
 
 	public void setStaff(Staff staff) {
 		this.staff = staff;
-	}
+	} 
 
 	public int getOrderStatus() {
 		return orderStatus;
