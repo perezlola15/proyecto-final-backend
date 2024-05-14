@@ -1,12 +1,14 @@
 package com.project.web.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -50,6 +52,21 @@ public class OrderDataController {
 
 	        OrderData savedOrder = orderDataService.save(orderDB);
 	        return new ResponseEntity<>(savedOrder, HttpStatus.OK); 
+	    }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
+	}
+	
+	@PatchMapping("/{orderId}")
+	public ResponseEntity<OrderData> updateOrderStatus(@PathVariable("orderId") int orderId, @RequestBody Map<String, Object> updates) {
+	    return orderDataService.findById(orderId).map(orderDB -> {
+	        // Verifica si el mapa de actualizaciones contiene el campo 'orderStatus'
+	        if (updates.containsKey("orderStatus")) {
+	            // Actualiza el estado del pedido solo si existe en las actualizaciones
+	            orderDB.setOrderStatus((Integer) updates.get("orderStatus"));
+	        }
+
+	        // Guarda los cambios en la base de datos
+	        OrderData savedOrder = orderDataService.save(orderDB);
+	        return new ResponseEntity<>(savedOrder, HttpStatus.OK);
 	    }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND)); 
 	}
 
